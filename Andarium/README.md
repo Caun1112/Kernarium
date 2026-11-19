@@ -71,6 +71,12 @@ scheme's `test` action runs it.
 
 ## Devices
 
+The iOS 17 compatibility build compiles AndariumCore and GuestHostCore for
+arm64 devices and the default shared interface in AndariumPreview for the
+Simulator. The Android device application still targets iOS 27. Its graphics
+runtime requires a Metal 4 driver for both Zink and Venus
+([graphics architecture](../docs/graphics.md)).
+
 The guest is drawn with Metal 4, which the A14 and later chips have. No
 capability key names the chip, so `UIRequiredDeviceCapabilities` names `metal`
 and the application asks the GPU for the Metal 4 family at launch
