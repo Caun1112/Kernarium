@@ -200,11 +200,19 @@ final class AndariumHostingController<Content: View>: UIHostingController<Conten
     private func currentInputs() -> SceneUpdateInputs? {
         if let inputsSource { return inputsSource() }
         guard let scene = view.window?.windowScene else { return nil }
-        let geometry = scene.effectiveGeometry
+        let sceneSize: CGSize
+        let orientation: UIInterfaceOrientation
+        if #available(iOS 26.0, *) {
+            sceneSize = scene.effectiveGeometry.coordinateSpace.bounds.size
+            orientation = scene.effectiveGeometry.interfaceOrientation
+        } else {
+            sceneSize = scene.coordinateSpace.bounds.size
+            orientation = scene.interfaceOrientation
+        }
         return SceneUpdateInputs(
             scene: ObjectIdentifier(scene), driver: model.driver.map { ObjectIdentifier($0) },
-            sceneSize: geometry.coordinateSpace.bounds.size, screenSize: scene.screen.bounds.size,
-            interfaceOrientation: geometry.interfaceOrientation.rawValue, phase: model.phase,
+            sceneSize: sceneSize, screenSize: scene.screen.bounds.size,
+            interfaceOrientation: orientation.rawValue, phase: model.phase,
             interfaceRotates: interfaceRotates)
     }
 

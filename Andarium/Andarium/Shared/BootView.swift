@@ -597,7 +597,7 @@ private struct BootPanel: ViewModifier {
                 in: .rect(cornerRadius: radius, style: .continuous)
             )
         } else {
-            content.glassEffect(.regular, in: .rect(cornerRadius: radius))
+            content.panelSurface(in: .rect(cornerRadius: radius))
         }
     }
 }

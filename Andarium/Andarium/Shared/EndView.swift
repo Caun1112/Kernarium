@@ -47,7 +47,7 @@ struct EndView: View {
                     .frame(height: 44)
                     .padding(.horizontal, 10)
             }
-            .buttonStyle(.glass)
+            .panelButton()
             .padding(.top, 14)
             .onChange(of: copied) { _, now in
                 if now { VoiceOver.announce(String(localized: "Report copied")) }

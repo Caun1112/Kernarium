@@ -77,8 +77,8 @@ struct WhatsNewRibbon: View {
         .padding(.vertical, 9)
         .frame(minHeight: 52)
         // On a dark ground the tint needs more of the accent to read as jade.
-        .glassEffect(
-            .regular.tint(Color.accentColor.opacity(colorScheme == .dark ? 0.42 : 0.24)).interactive(), in: .capsule)
+        .panelSurface(
+            tint: Color.accentColor.opacity(colorScheme == .dark ? 0.42 : 0.24), interactive: true, in: .capsule)
         .offset(y: pull)
         // A swipe that moves the ribbon is not also a tap on it.
         .highPriorityGesture(swipe)

@@ -228,7 +228,9 @@ struct FolderPage: View {
                 .disabled(browser.busy || !browser.canImport(into: browser.current))
             }
         }
-        ToolbarSpacer(.fixed, placement: .topBarTrailing)
+        if #available(iOS 26.0, *) {
+            ToolbarSpacer(.fixed, placement: .topBarTrailing)
+        }
         ToolbarItem(placement: .confirmationAction) {
             Button("Done", systemImage: "checkmark", action: close)
         }

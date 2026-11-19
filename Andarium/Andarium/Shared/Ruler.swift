@@ -239,7 +239,7 @@ struct SystemControls: View {
                 )
             }
         }
-        .glassEffect(.regular, in: .rect(cornerRadius: 30))
+        .panelSurface(in: .rect(cornerRadius: 30))
     }
 
     private var processor: some View {
@@ -364,7 +364,7 @@ struct StoragePanel: View {
             Text("\(Formats.size(bytes: host.freeStorageBytes)) free on this \(host.name)")
                 .foregroundStyle(.secondary)
         }
-        .glassEffect(.regular, in: .rect(cornerRadius: 30))
+        .panelSurface(in: .rect(cornerRadius: 30))
     }
 }
 
@@ -552,7 +552,7 @@ struct ResizeSheet: View {
             }
         }
         .presentationDetents([.height(470)])
-        .presentationSizing(FixedSheetSizing(width: 540, height: 480))
+        .fixedSheetSize(width: 540, height: 480)
         .onAppear {
             capacity = model.resizePreset ?? guest.effectiveCapacityGiB
         }
@@ -597,6 +597,7 @@ struct ResizeSheet: View {
 }
 
 /// A form-width sheet of a set size on iPad. On iPhone the detents decide.
+@available(iOS 18.0, *)
 nonisolated struct FixedSheetSizing: PresentationSizing {
     let width: CGFloat
     let height: CGFloat

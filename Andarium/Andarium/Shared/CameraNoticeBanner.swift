@@ -74,6 +74,6 @@ struct CameraNoticeBanner: View {
         }
         .padding(.vertical, 10)
         .padding(.horizontal, 14)
-        .glassEffect(.regular, in: .rect(cornerRadius: 22))
+        .panelSurface(in: .rect(cornerRadius: 22))
     }
 }

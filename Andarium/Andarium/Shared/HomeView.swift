@@ -41,7 +41,7 @@ struct HomeView: View {
                                 }
                             }
                         }
-                        .safeAreaBar(edge: .bottom) { startBar(wide: wide) }
+                        .bottomBar { startBar(wide: wide) }
                     } else {
                         WelcomeView()
                     }
@@ -122,7 +122,7 @@ struct HomeView: View {
             .padding(.top, 8)
             .padding(.bottom, 20)
         }
-        .safeAreaBar(edge: .bottom) { startBar(wide: false) }
+        .bottomBar { startBar(wide: false) }
         let second = ScrollViewReader { proxy in
             ScrollView {
                 VStack(spacing: 22) {
@@ -340,7 +340,7 @@ struct HomeView: View {
                     open: { model.sheet = .whatsNew },
                     close: { withAnimation(.snappy) { model.whatsNew.putAway() } }
                 )
-                .matchedTransitionSource(id: Self.ribbonID, in: whatsNewZoom)
+                .zoomSource(id: Self.ribbonID, in: whatsNewZoom)
                 .transition(
                     reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity)
                 )
@@ -388,7 +388,7 @@ struct StartButton: View {
         .font(.body.weight(.semibold))
         .foregroundStyle(.white)
         .background(Capsule().fill(Color.accentColor))
-        .glassEffect(.regular.tint(Color.accentColor).interactive(), in: .capsule)
+        .panelSurface(tint: .accentColor, interactive: true, in: .capsule)
         .opacity(blocked ? 0.4 : 1)
         .disabled(blocked)
     }
@@ -501,7 +501,7 @@ struct WelcomeView: View {
                     .font(.body.weight(.semibold))
                     .frame(width: 220, height: 50)
             }
-            .buttonStyle(.glassProminent)
+            .panelButton(prominent: true)
             .disabled(!model.host.runsGuestGraphics)
             .padding(.top, 28)
             Spacer(minLength: 20)
@@ -548,7 +548,7 @@ struct NoticeCard: View {
                     .fixedSize(horizontal: false, vertical: true)
                 if let action {
                     Button(action.label, action: action.perform)
-                        .buttonStyle(.glass)
+                        .panelButton()
                         .controlSize(.small)
                         .padding(.top, 8)
                         .accessibilityHint(action.hint ?? "")
@@ -573,7 +573,7 @@ struct NoticeCard: View {
             }
         }
         .padding(14)
-        .glassEffect(.regular, in: .rect(cornerRadius: 22))
+        .panelSurface(in: .rect(cornerRadius: 22))
         .accessibilityElement(children: .contain)
     }
 }
@@ -605,14 +605,14 @@ struct UnfinishedUpdateCard: View {
             }
             if canRestore {
                 Button("Restore") { Task { await model.restoreUpdate() } }
-                    .buttonStyle(.glass)
+                    .panelButton()
                     .controlSize(.regular)
                     .accessibilityIdentifier("home-update-restore")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
-        .glassEffect(.regular, in: .rect(cornerRadius: 22))
+        .panelSurface(in: .rect(cornerRadius: 22))
     }
 
     private var text: String {
@@ -654,7 +654,7 @@ struct EraseCard: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 26))
+        .panelSurface(interactive: true, in: .rect(cornerRadius: 26))
     }
 }
 
@@ -666,7 +666,7 @@ struct ZoomFrom: ViewModifier {
     let enabled: Bool
 
     func body(content: Content) -> some View {
-        if enabled {
+        if #available(iOS 18.0, *), enabled {
             content.navigationTransition(.zoom(sourceID: id, in: namespace))
         } else {
             content

@@ -47,7 +47,7 @@ struct SnapshotsSheet: View {
             }
         }
         .modifier(SnapshotPrompts())
-        .presentationSizing(FixedSheetSizing(width: 780, height: 820))
+        .fixedSheetSize(width: 780, height: 820)
         .task { await store.reload() }
         // The sheet opens at its list again next time.
         .onDisappear {
@@ -125,7 +125,7 @@ struct SnapshotList: View {
                 }
             }
         }
-        .safeAreaBar(edge: .bottom) { SnapshotTakeBar() }
+        .bottomBar { SnapshotTakeBar() }
         // The take prompt's keyboard covers the bar instead of lifting it.
         .ignoresSafeArea(.keyboard)
     }
@@ -306,7 +306,7 @@ struct SnapshotTakeBar: View {
             .font(.body.weight(.semibold))
             .foregroundStyle(.white)
             .background(Capsule().fill(Color.accentColor))
-            .glassEffect(.regular.tint(Color.accentColor).interactive(), in: .capsule)
+            .panelSurface(tint: .accentColor, interactive: true, in: .capsule)
             .opacity(refusal == nil ? 1 : 0.4)
             .disabled(refusal != nil)
             .accessibilityIdentifier("snapshots-take")
@@ -381,7 +381,7 @@ struct SnapshotDetail: View {
                             .font(.body.weight(.semibold))
                             .frame(maxWidth: .infinity, minHeight: 34)
                     }
-                    .buttonStyle(.glassProminent)
+                    .panelButton(prominent: true)
                     .disabled(restoreRefusal != nil)
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))

@@ -118,7 +118,7 @@ struct RailStats: View {
         }
         .padding(.vertical, 10)
         .frame(width: 70)
-        .glassEffect(.regular, in: .rect(cornerRadius: 18))
+        .panelSurface(in: .rect(cornerRadius: 18))
         .environment(\.colorScheme, .dark)
         .allowsHitTesting(false)
         .accessibilityElement(children: .ignore)

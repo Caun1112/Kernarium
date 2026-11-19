@@ -25,7 +25,7 @@ struct BusyOverlay: View {
             }
             .padding(20)
             .frame(maxWidth: sizeClass == .regular ? 520 : 360)
-            .glassEffect(.regular, in: .rect(cornerRadius: 26))
+            .panelSurface(in: .rect(cornerRadius: 26))
             .padding(24)
             .onCardHalf()
         }

@@ -28,7 +28,7 @@ struct ScreenReaderCard: View {
             // screen the body measured 4.05:1 in dark mode. The opaque backing
             // the app's other cards use keeps the words readable over any screen.
             .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 26))
-            .glassEffect(.regular, in: .rect(cornerRadius: 26))
+            .panelSurface(in: .rect(cornerRadius: 26))
             .padding(24)
             .onCardHalf()
         }

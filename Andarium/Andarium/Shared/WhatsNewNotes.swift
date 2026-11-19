@@ -28,7 +28,7 @@ struct WhatsNewSheet: View {
                     }
                 }
         }
-        .presentationSizing(.form)
+        .sheetSize(form: true)
         .onAppear { model.whatsNew.read() }
         .onDisappear {
             // The ribbon leaves once the notes are gone, so the zoom back
@@ -69,7 +69,7 @@ struct WhatsNewNotesList: View {
                                 WhatsNewEntryRow(entry: entry)
                             }
                         }
-                        .glassEffect(.regular, in: .rect(cornerRadius: 26))
+                        .panelSurface(in: .rect(cornerRadius: 26))
                     }
                 }
             }

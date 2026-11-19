@@ -114,7 +114,7 @@ struct SystemSheet: View {
             }
         }
         .presentationDetents([.height(470)])
-        .presentationSizing(FixedSheetSizing(width: 540, height: 480))
+        .fixedSheetSize(width: 540, height: 480)
         .onAppear { draft = model.guest }
     }
 }
@@ -237,6 +237,6 @@ struct InfoSheet: View {
         }
         // Tall enough for every row, in any language, without scrolling to
         // the last one; the system keeps it inside a smaller window.
-        .presentationSizing(FixedSheetSizing(width: 540, height: 900))
+        .fixedSheetSize(width: 540, height: 900)
     }
 }

@@ -98,7 +98,7 @@ struct TipJarSheet: View {
                         .accessibilityIdentifier("tipjar-close-bar")
                 }
             }
-            .safeAreaBar(edge: .bottom) {
+            .bottomBar {
                 TipJarBar(jar: jar, close: close)
                     .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height in
                         barHeight = height
@@ -106,7 +106,7 @@ struct TipJarSheet: View {
             }
         }
         .presentationDetents(fullHeight ? [.large] : [.height(fittedHeight)])
-        .presentationSizing(FixedSheetSizing(width: 600, height: fullHeight ? 2000 : fittedHeight))
+        .fixedSheetSize(width: 600, height: fullHeight ? 2000 : fittedHeight)
         .accessibilityIdentifier("tipjar-sheet")
         .task { jar.start() }
     }
@@ -253,14 +253,14 @@ private struct TipJarBar: View {
                 Button(action: close) {
                     Text(TipJarWords.done).frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.glassProminent)
+                .panelButton(prominent: true)
                 .controlSize(.large)
                 .accessibilityIdentifier("tipjar-done")
             } else if jar.canRetry {
                 Button { jar.retry() } label: {
                     Text(TipJarWords.retry).frame(maxWidth: .infinity)
                 }
-                .buttonStyle(.glassProminent)
+                .panelButton(prominent: true)
                 .controlSize(.large)
                 .accessibilityIdentifier("tipjar-retry")
             } else {
@@ -318,7 +318,7 @@ private struct TipJarBar: View {
             .contentShape(.capsule)
         }
         .buttonStyle(.plain)
-        .glassEffect(enabled ? .regular.interactive() : .regular, in: .capsule)
+        .panelSurface(interactive: enabled, in: .capsule)
         .opacity(enabled ? 1 : 0.45)
         .disabled(!enabled)
         .accessibilityElement(children: .ignore)

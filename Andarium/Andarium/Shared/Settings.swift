@@ -97,7 +97,7 @@ struct SessionSettingsSheet: View {
         }
         .environment(\.filesBarHeight, filesBarHeight)
         // The bar is outside the pages, so folders slide under it.
-        .safeAreaBar(edge: .bottom) {
+        .bottomBar {
             if let browser = model.fileBrowser,
                (model.filesAvailable && browser.browsing) || browser.transfer != nil || browser.conflict != nil {
                 FilesBar(browser: browser, usable: model.filesAvailable, bottomInset: filesBarInset)

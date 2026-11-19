@@ -122,7 +122,7 @@ struct ResolutionSheet: View {
                             .accessibilityIdentifier("resolution-choice-\(index)")
                     }
                 }
-                .glassEffect(.regular, in: .rect(cornerRadius: 26))
+                .panelSurface(in: .rect(cornerRadius: 26))
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
                 .padding(.bottom, 24)
@@ -146,7 +146,7 @@ struct ResolutionSheet: View {
             }
         }
         .presentationDetents([.height(height(of: choices))])
-        .presentationSizing(FixedSheetSizing(width: 540, height: height(of: choices) + 10))
+        .fixedSheetSize(width: 540, height: height(of: choices) + 10)
     }
 
     /// A row is 61 points, and the bar and the margins 72.
@@ -198,7 +198,7 @@ struct DisplayAreaProbe: View {
 
     var body: some View {
         Color.clear
-            .containerCornerOffset(cornerEdges, sizeToFit: true)
+            .windowCornerOffset(cornerEdges, sizeToFit: true)
             .onGeometryChange(for: CGSize.self, of: \.size) {
                 size = $0
                 publish()

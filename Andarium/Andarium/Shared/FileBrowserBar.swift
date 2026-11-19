@@ -35,7 +35,7 @@ struct FilesBar: View {
     }
 
     var body: some View {
-        GlassEffectContainer(spacing: 10) {
+        PanelGroup(spacing: 10) {
             VStack(spacing: 10) {
                 if browser.conflict != nil || browser.transfer != nil {
                     FileTransferSlot(browser: browser)
@@ -101,15 +101,13 @@ struct FilesBar: View {
                                 .id(route.path)
                         }
                     }
+                    .onGeometryChange(for: Bool.self) { geometry in
+                        geometry.frame(in: .scrollView(axis: .horizontal)).minX < -1
+                    } action: { trailScrolled = $0 }
                 }
                 .scrollIndicators(.hidden)
-                .defaultScrollAnchor(.leading, for: .alignment)
-                .defaultScrollAnchor(.trailing, for: .initialOffset)
-                .defaultScrollAnchor(.trailing, for: .sizeChanges)
+                .trailScrollAnchors()
                 .scrollEdgeEffectHidden()
-                .onScrollGeometryChange(for: Bool.self) { $0.contentOffset.x > 1 } action: { _, scrolled in
-                    trailScrolled = scrolled
-                }
                 .mask {
                     HStack(spacing: 0) {
                         LinearGradient(colors: [.clear, .black], startPoint: .leading, endPoint: .trailing)
@@ -126,7 +124,7 @@ struct FilesBar: View {
         .padding(.leading, 12)
         .padding(.trailing, 16)
         .frame(height: Self.height)
-        .glassEffect(.regular.interactive(), in: .capsule)
+        .panelSurface(interactive: true, in: .capsule)
     }
 
     private func crumb(_ index: Int, route: FolderRoute) -> some View {
@@ -187,7 +185,7 @@ struct FilesBar: View {
                 } label: {
                     actionLabel("Import", symbol: "square.and.arrow.down")
                 }
-                .buttonStyle(.glass)
+                .panelButton()
                 .disabled(browser.busy || !browser.canImport(into: browser.current))
             } else {
                 Button {
@@ -195,7 +193,7 @@ struct FilesBar: View {
                 } label: {
                     actionLabel("Export", symbol: "square.and.arrow.up")
                 }
-                .buttonStyle(.glassProminent)
+                .panelButton(prominent: true)
                 .disabled(browser.busy)
             }
         }
@@ -245,8 +243,20 @@ extension View {
 private extension View {
     /// The trail scrolls inside its capsule, which needs no scroll-edge
     /// treatment of its own.
+    @ViewBuilder
     func scrollEdgeEffectHidden() -> some View {
-        scrollEdgeEffectStyle(.none, for: .horizontal)
+        if #available(iOS 26.0, *) { scrollEdgeEffectStyle(.none, for: .horizontal) } else { self }
+    }
+
+    @ViewBuilder
+    func trailScrollAnchors() -> some View {
+        if #available(iOS 18.0, *) {
+            defaultScrollAnchor(.leading, for: .alignment)
+                .defaultScrollAnchor(.trailing, for: .initialOffset)
+                .defaultScrollAnchor(.trailing, for: .sizeChanges)
+        } else {
+            defaultScrollAnchor(.trailing)
+        }
     }
 }
 
@@ -323,13 +333,9 @@ struct TransferCapsule: View {
             summary
         }
         .clipShape(.rect(cornerRadius: radius, style: .continuous))
-        .glassEffect(glass, in: .rect(cornerRadius: radius, style: .continuous))
+        .panelSurface(tint: transfer.stage == .failed ? .red.opacity(0.16) : nil, in: .rect(cornerRadius: radius, style: .continuous))
         .animation(.snappy, value: transfer.expanded)
         .animation(.snappy, value: transfer.stage)
-    }
-
-    private var glass: Glass {
-        transfer.stage == .failed ? .regular.tint(.red.opacity(0.16)) : .regular
     }
 
     private var summary: some View {
@@ -543,7 +549,7 @@ struct ConflictCard: View {
             .buttonBorderShape(.capsule)
         }
         .padding(16)
-        .glassEffect(.regular, in: .rect(cornerRadius: 24, style: .continuous))
+        .panelSurface(in: .rect(cornerRadius: 24, style: .continuous))
     }
 
     private func choice(_ title: String) -> some View {

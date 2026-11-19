@@ -31,7 +31,7 @@ struct HomeSection<Content: View, Footer: View>: View {
                 .padding(.leading, 18)
                 .accessibilityAddTraits(.isHeader)
             VStack(spacing: 0) { content }
-                .glassEffect(.regular, in: .rect(cornerRadius: 26))
+                .panelSurface(in: .rect(cornerRadius: 26))
             footer
         }
     }

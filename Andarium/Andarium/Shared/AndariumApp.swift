@@ -69,6 +69,7 @@ final class AndariumSceneDelegate: UIResponder, UIWindowSceneDelegate {
     /// The process's model, which this scene shows.
     private(set) var model: AppModel?
 
+    @available(iOS 26.0, *)
     func windowScene(_ windowScene: UIWindowScene, didUpdateEffectiveGeometry previousGeometry: UIWindowScene.Geometry) {
         (window?.rootViewController as? SceneGeometryObserver)?.sceneGeometryDidChange()
     }

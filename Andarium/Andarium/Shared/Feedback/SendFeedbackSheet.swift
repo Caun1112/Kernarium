@@ -95,7 +95,7 @@ struct SendFeedbackSheet: View {
             }
             }
             .background(Color(.systemBackground))
-            .safeAreaBar(edge: .bottom) { bar }
+            .bottomBar { bar }
             .navigationTitle(Text("Send feedback", tableName: "Feedback"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -211,7 +211,7 @@ struct SendFeedbackSheet: View {
             #endif
         }
         .onDisappear { model.close() }
-        .presentationSizing(.page)
+        .sheetSize(form: false)
     }
 
     private func cancel() {
@@ -525,7 +525,7 @@ struct SendFeedbackSheet: View {
             .padding(.leading, 8)
             .padding(.trailing, 6)
             .padding(.vertical, 6)
-            .glassEffect(.regular, in: .capsule)
+            .panelSurface(in: .capsule)
             .disabled(!state.mailAvailable)
         }
         .frame(maxWidth: 560)
@@ -654,7 +654,7 @@ struct SendFeedbackSheet: View {
             .contentShape(.capsule)
         }
         .buttonStyle(.plain)
-        .glassEffect(.regular.interactive(), in: .capsule)
+        .panelSurface(interactive: true, in: .capsule)
         .disabled(!state.canSend)
         .accessibilityLabel(Text("Send feedback", tableName: "Feedback"))
         .accessibilityIdentifier("feedback-send")
@@ -678,7 +678,7 @@ struct SendFeedbackSheet: View {
                         .font(.footnote)
                         .fixedSize(horizontal: false, vertical: true)
                     Button(Words.createBugReport, action: model.createBugReport)
-                        .buttonStyle(.glassProminent)
+                        .panelButton(prominent: true)
                         .controlSize(.small)
                         .disabled(!state.canMakeBugReport)
                         .accessibilityIdentifier("feedback-create-bug-report")
@@ -718,7 +718,7 @@ struct SendFeedbackSheet: View {
             .accessibilityLabel(Text("Dismiss", tableName: "Feedback"))
         }
         .padding(14)
-        .glassEffect(.regular, in: .rect(cornerRadius: 22))
+        .panelSurface(in: .rect(cornerRadius: 22))
         .accessibilityIdentifier("feedback-card")
     }
 }

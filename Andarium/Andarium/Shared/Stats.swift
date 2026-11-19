@@ -184,7 +184,7 @@ struct StatsPill: View {
         .fixedSize()
         .padding(.horizontal, 14)
         .frame(height: StatsPlacement.height)
-        .glassEffect(.regular, in: .capsule)
+        .panelSurface(in: .capsule)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(readout.spoken(memoryMiB: memoryMiB, recovery: recovery))
     }

@@ -125,7 +125,7 @@ private struct FoldSheetPresentation: ViewModifier {
     func body(content: Content) -> some View {
         if turned {
             content
-                .presentationSizing(.page)
+                .sheetSize(form: false)
                 .presentationDetents([.height(height)])
                 .presentationBackgroundInteraction(reachesBehind ? .enabled : .disabled)
                 .onChange(of: model.fold.flatMap(FoldSheet.detentHeight)) { _, next in

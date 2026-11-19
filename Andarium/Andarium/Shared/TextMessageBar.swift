@@ -156,7 +156,7 @@ struct TextMessageBar: View {
                     }
                     .frame(width: 30, height: 30)
                 }
-                .buttonStyle(.glassProminent)
+                .panelButton(prominent: true)
                 .buttonBorderShape(.circle)
                 .disabled(sending || !model.canSendTextMessage)
                 .keyboardShortcut(.return, modifiers: .command)
@@ -169,7 +169,7 @@ struct TextMessageBar: View {
         // measured under 4.5:1 over some screens. The opaque backing the screen
         // reader card has keeps every word readable over any screen.
         .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 28))
-        .glassEffect(.regular, in: .rect(cornerRadius: 28))
+        .panelSurface(in: .rect(cornerRadius: 28))
         .frame(maxWidth: 560)
         .padding(.horizontal, 10)
         .padding(.bottom, 6)

@@ -129,7 +129,7 @@ struct SideKeysOverlay: View {
                 .allowsHitTesting(false)
                 .transition(.opacity)
 
-                GlassEffectContainer(spacing: 4) {
+                PanelGroup(spacing: 4) {
                     HStack(alignment: .top, spacing: KeyMetrics.columnGap) {
                         if leading {
                             powerColumn
@@ -307,7 +307,7 @@ struct ClosedKeys: View {
         Capsule()
             .fill(.white.opacity(0.9))
             .frame(width: 9, height: height)
-            .glassEffect(.regular, in: .capsule)
+            .panelSurface(in: .capsule)
             .shadow(color: .black.opacity(0.35), radius: 3, x: leading ? 1 : -1)
     }
 }
@@ -362,7 +362,7 @@ struct PowerKey: View {
             }
         }
         .frame(width: size.width, height: size.height)
-        .glassEffect(.regular.interactive(), in: .capsule)
+        .panelSurface(interactive: true, in: .capsule)
         .contentShape(.capsule)
         .onTapGesture(perform: power)
         .onLongPressGesture(minimumDuration: 0.6, perform: powerHold)
@@ -410,7 +410,7 @@ struct SettingsKey: View {
                 .contentShape(.capsule)
         }
         .buttonStyle(.plain)
-        .glassEffect(.regular.interactive(), in: .capsule)
+        .panelSurface(interactive: true, in: .capsule)
         .accessibilityLabel("Settings")
         .accessibilityHint("Install apps, ADB, stats and options")
     }
@@ -447,7 +447,7 @@ struct KeyPair: View {
             }
         }
         .buttonStyle(.plain)
-        .glassEffect(.regular.interactive(), in: .capsule)
+        .panelSurface(interactive: true, in: .capsule)
     }
 
     private func key(_ key: (symbol: String, label: String, action: () -> Void)) -> some View {
