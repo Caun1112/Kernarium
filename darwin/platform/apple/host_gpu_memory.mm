@@ -37,7 +37,7 @@ std::uint64_t hostGraphicsFootprintBytes() noexcept
     mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
     if (task_info(mach_task_self(), TASK_VM_INFO,
             reinterpret_cast<task_info_t>(&info), &count) != KERN_SUCCESS ||
-        count < TASK_VM_INFO_COUNT)
+        count < TASK_VM_INFO_REV3_COUNT)
         return 0;
     const std::int64_t bytes = info.ledger_tag_graphics_footprint +
         info.ledger_tag_graphics_footprint_compressed;
@@ -48,7 +48,7 @@ namespace {
 
 /* What the retire asks to be made resident: a residency set holding one small
  * buffer, kept for the life of the process and never freed. */
-struct Retirement {
+struct API_AVAILABLE(macos(15.0), ios(18.0)) Retirement {
     std::mutex mutex;
     id<MTLResidencySet> set = nil;
     id<MTLBuffer> buffer = nil;
@@ -57,6 +57,7 @@ struct Retirement {
 
 /* Makes the set on first use and returns whether there is one. A device that
  * cannot make it is not asked again. */
+API_AVAILABLE(macos(15.0), ios(18.0))
 bool prepare(Retirement& retirement) noexcept
 {
     if (retirement.set != nil)
@@ -83,18 +84,30 @@ bool prepare(Retirement& retirement) noexcept
     return true;
 }
 
+API_AVAILABLE(macos(15.0), ios(18.0))
+bool requestRetirement() noexcept
+{
+    static Retirement* const retirement = new Retirement;
+    @autoreleasepool {
+        std::lock_guard lock(retirement->mutex);
+        if (!prepare(*retirement))
+            return false;
+        [retirement->set requestResidency];
+        [retirement->set endResidency];
+        return true;
+    }
+}
+
 } // namespace
 
 void retireFreedGpuMemory(std::chrono::milliseconds wait) noexcept
 {
-    static Retirement* const retirement = new Retirement;
     const std::uint64_t before = hostGraphicsFootprintBytes();
-    @autoreleasepool {
-        std::lock_guard lock(retirement->mutex);
-        if (!prepare(*retirement))
+    if (@available(macOS 15.0, iOS 18.0, *)) {
+        if (!requestRetirement())
             return;
-        [retirement->set requestResidency];
-        [retirement->set endResidency];
+    } else {
+        return;
     }
     /* The footprint falls a few milliseconds after the request. */
     constexpr std::uint64_t fall = 1U << 20;
