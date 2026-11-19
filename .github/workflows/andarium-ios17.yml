@@ -18,3 +18,13 @@ jobs:
           xcodebuild -scheme AndariumCore -configuration Release \
             -destination 'generic/platform=iOS' \
             IPHONEOS_DEPLOYMENT_TARGET=17.0 CODE_SIGNING_ALLOWED=NO build
+  interface:
+    runs-on: xcode-27
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build shared interface for iOS 17
+        run: |
+          xcodebuild -project Andarium/Andarium.xcodeproj -scheme AndariumPreview \
+            -configuration Debug -destination 'generic/platform=iOS Simulator' \
+            IPHONEOS_DEPLOYMENT_TARGET=17.0 CODE_SIGNING_ALLOWED=NO build
