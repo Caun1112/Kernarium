@@ -58,7 +58,11 @@ enum HeatLimitPreview {
         var pending: [UIView] = scenes.flatMap(\.windows)
         while let view = pending.popLast() {
             if let button = view as? UIButton, button.menu != nil, button.showsMenuAsPrimaryAction {
-                button.performPrimaryAction()
+                if #available(iOS 17.4, *) {
+                    button.performPrimaryAction()
+                } else {
+                    button.sendActions(for: .primaryActionTriggered)
+                }
                 return
             }
             pending += view.subviews

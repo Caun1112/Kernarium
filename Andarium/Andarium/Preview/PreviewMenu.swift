@@ -27,7 +27,11 @@ enum PreviewMenu {
         while let view = pending.popLast() {
             if let control = view as? UIControl,
                control.interactions.contains(where: { $0 is UIContextMenuInteraction }) {
-                control.performPrimaryAction()
+                if #available(iOS 17.4, *) {
+                    control.performPrimaryAction()
+                } else {
+                    control.sendActions(for: .primaryActionTriggered)
+                }
                 return
             }
             pending += view.subviews
