@@ -145,10 +145,12 @@ struct WhatsNewEntryRow: View {
                     WhatsNewPoints(points: entry.points)
                 }
                 if let place = entry.place {
-                    Label(place.words, systemImage: place.symbol)
+                    HStack(spacing: 5) {
+                        Image(systemName: place.symbol).accessibilityHidden(true)
+                        Text(place.words)
+                    }
                         .font(.footnote)
                         .foregroundStyle(.secondary)
-                        .labelIconToTitleSpacing(5)
                         .padding(.top, 3)
                 }
             }

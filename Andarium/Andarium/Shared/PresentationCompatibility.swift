@@ -71,6 +71,24 @@ extension View {
     }
 
     @ViewBuilder
+    func sheetSubtitle(_ subtitle: String) -> some View {
+        if #available(iOS 26.0, *) {
+            navigationSubtitle(subtitle)
+        } else if !subtitle.isEmpty {
+            safeAreaInset(edge: .top, spacing: 0) {
+                Text(verbatim: subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .padding(.bottom, 4)
+                    .frame(maxWidth: .infinity)
+                    .background(.bar)
+            }
+        } else {
+            self
+        }
+    }
+
+    @ViewBuilder
     func sheetSize(form: Bool) -> some View {
         if #available(iOS 18.0, *) {
             if form { presentationSizing(.form) } else { presentationSizing(.page) }

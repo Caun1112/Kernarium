@@ -25,7 +25,7 @@ struct FolderPage: View {
             .background { FileDateProbe(width: $dateWidth) }
             .onGeometryChange(for: Bool.self) { $0.size.width >= 520 } action: { wide = $0 }
             .navigationTitle(GuestPath.name(of: path))
-            .navigationSubtitle(subtitle)
+            .sheetSubtitle(subtitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbar }
             .task(id: LoadKey(path: path, available: model.filesAvailable)) {
